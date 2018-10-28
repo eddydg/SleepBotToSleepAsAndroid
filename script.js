@@ -1,15 +1,3 @@
-const input = `
-Date, Sleep Time, Wake Time, Hours,Note
-10/27/18,01:54,10:53,8.98,
-10/25/18,23:53,09:47,8.90,unenote
-`;
-const expectedOutput = `
-Id,Tz,From,To,Sched,Hours,Rating,Comment,Framerate,Snore,Noise,Cycles,DeepSleep,LenAdjust,Geo,"10:53"
-"1540598040000","Europe/Paris","27. 10. 2018 1:54","27. 10. 2018 10:53","27. 10. 2018 10:53","8.980","0.0","","10005","-1","-1.0","-1","-2.0","0","","0.0"
-Id,Tz,From,To,Sched,Hours,Rating,Comment,Framerate,Snore,Noise,Cycles,DeepSleep,LenAdjust,Geo,"9:47"
-"1540504380000","Europe/Paris","24. 10. 2018 23:53","25. 10. 2018 9:47","25. 10. 2018 9:47","8.900","0.0","unenote","10005","-1","-1.0","-1","-2.0","0","","0.0"
-`;
-
 const timeZone = 'Europe/Paris';
 
 // SleepBot export format
@@ -27,7 +15,7 @@ function isValid() {
 }
 
 function parseSleepBot(input) {
-  const lines = input.split('\n').filter(l => !!l && !!l.trim());
+  const lines = input.split('\n').filter(l => !!l.trim());
   const [rawHeaders, ...rawRows] = lines;
   const headers = rawHeaders.split(',').map(h => h.trim());
   const rows = rawRows.map(row =>
@@ -114,15 +102,7 @@ function sleepBotToSleepAsAndroid(rawInput) {
   return result;
 }
 
-function exportCSV(csvContent) {
-  const encodedUri = "data:text/csv;charset=utf-8," + encodeURI(csvContent);
-  const link = document.createElement('a');
-  link.text = 'Download';
-  link.setAttribute('href', encodedUri);
-  link.setAttribute('download', 'sleepAsAndroidExport.csv');
-  document.body.appendChild(link);
+function getExportCSVUri(sleepBotData) {
+  const sleepAsAndroidData = sleepBotToSleepAsAndroid(sleepBotData);
+  return "data:text/csv;charset=utf-8," + encodeURI(sleepAsAndroidData);
 }
-
-console.clear();
-const output = sleepBotToSleepAsAndroid(input);
-exportCSV(output);

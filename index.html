@@ -6,5 +6,21 @@
 <body>
 <script src="./script.js"></script>
 
+<textarea id="sleepbotinput"></textarea>
+<input type="button" name="Convert" value="Convert" onclick="startExport()">
+
+<script>
+  const sleepbotInput = document.querySelector('#sleepbotinput');
+
+  function startExport() {
+    const csvcontent = sleepbotInput.value;
+    const encodedUri = getExportCSVUri(csvcontent);
+    const link = document.createElement('a');
+    link.text = 'Download';
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'sleep-export.csv');
+    document.body.appendChild(link);
+  }
+</script>
 </body>
 </html>
